@@ -16,6 +16,12 @@ def load_df_from_pickle(path):
 
 DATA = {name: load_df_from_pickle(path) for name, path in DATA_PATHS.items()}
 
+DATA['ORDERED_PERIODS'] = DATA['METADATA_DF']['period'].sort_values(key=lambda x: x.apply(lambda y: int(y[:4]))).unique()
+DATA['METADATA_DF']['dom_topic_name'] = DATA['METADATA_DF']['dom_topic'].map(DATA['TOPIC_MAPPINGS_DF']['topic_name'])
 
-# DATA = [2312, 34234, 3453]  # with temp as open(): DATA = pickle.load(PATH)
+map_topics = True
+if map_topics:
+    DATA['DOC_TOPICS_DF'].rename(columns=DATA['TOPIC_MAPPINGS_DF']['topic_name'], inplace=True)
+    DATA['TOPIC_WORDS_DF'].rename(index=DATA['TOPIC_MAPPINGS_DF']['topic_name'], inplace=True)
+    DATA['TOPIC_MAPPINGS_DF'].set_index('topic_name', inplace=True)
 

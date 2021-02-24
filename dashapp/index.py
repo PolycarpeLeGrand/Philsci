@@ -6,15 +6,21 @@ import dash
 
 from dashapp import app
 from dashapp.header import header
-from dashapp.example.exampletab import example_tab_layout
 from dashapp.about.abouttab import about_tab_layout
-
+from dashapp.presentation.presentationtab import presentation_tab_layout
+from dashapp.metadata.metadatatab import metadata_tab_layout
+from dashapp.topicsviz.topicsviztab import topicsviz_tab_layout
+from dashapp.topicsdetails.topicsdetailstab import topics_details_tab_layout
 
 # Register tabs following this format
 # {'name': 'tab-X', 'ulr': '/tabname', 'label': 'Tab Name', 'container': this_tab_layout}
+# tab names must follow 'tab-0', 'tab-1', etc format. Dont skip values!
 TABS = [
-    {'name': 'tab-0', 'url': '/extab', 'label': 'Example Tab', 'container': example_tab_layout},
-    {'name': 'tab-1', 'url': '/about', 'label': 'About', 'container': about_tab_layout},
+    {'name': 'tab-0', 'url': '/project', 'label': 'Project', 'container': presentation_tab_layout},
+    {'name': 'tab-1', 'url': '/metadata', 'label': 'Metadata', 'container': metadata_tab_layout},
+    {'name': 'tab-2', 'url': '/topicsviz', 'label': 'Topics Visualizations', 'container': topicsviz_tab_layout},
+    {'name': 'tab-3', 'url': '/topicsdetails', 'label': 'Topics Details', 'container': topics_details_tab_layout},
+    {'name': 'tab-4', 'url': '/about', 'label': 'About', 'container': about_tab_layout},
 ]
 
 

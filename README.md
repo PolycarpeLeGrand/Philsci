@@ -1,4 +1,4 @@
-Phidash
+Philsci
 =======
 
 Template project for Dash dashboards
@@ -7,6 +7,7 @@ Copy template and follow setup instructions
 
 Run with wsgi.py. Prod server will probably need to point to wsgi.server instead of app.
 
+Built on Python 3.9, from [Phidash](https://github.com/PolycarpeLeGrand/Phidash) template.
 
 Setup:
 ------

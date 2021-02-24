@@ -35,3 +35,7 @@ def text_with_info_tooltip(text, tooltip, text_id, placement='top'):
         dbc.Tooltip(tooltip, target=text_id, placement=placement)
     ], className='h6')
 
+
+def table_from_2d_list(data):
+    return
+
