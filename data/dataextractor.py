@@ -35,6 +35,7 @@ def make_dfs_from_xlsx():
     nf = nf.rename(index={ind: ind.lower().replace(' ', '_') for ind in nf.index}, columns={col: col.lower().replace(' ', '_') for col in nf.columns})
 
     mf[['tsne_2d_x', 'tsne_2d_y']] = TSNE(n_components=2, random_state=211).fit_transform(tf)
+    mf[['tsne_3d_x', 'tsne_3d_y', 'tsne_3d_z']] = TSNE(n_components=3, random_state=211).fit_transform(tf)
 
     print(nf)
     print(nf.index)

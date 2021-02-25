@@ -43,4 +43,23 @@ Workflow:
 Deploy:
 -------
 
+TODO:
+-----
+
+Features:
+
+* Wordclouds
+* Diachronic analysis
+
+Visuals:
+
+* Color maps for metadata tab so the same values have the same color in the bar chats and the pie chart.
+*  
+
+Dev:
+
+* Comments and doc
+* Tests
+* Data doc (ref markdown file for df col names, etc.)
+
 

@@ -16,12 +16,10 @@ from dashapp import app, DATA
 # Set tab id
 TAB_ID = 'topicsviz-tab'
 
-
 # Jumbotron
 title = 'Topics Visualizations jumbo'
 jum_col_1 = 'Tab description'
 topicsviz_jumbotron = jumbotron_2_columns(title, jum_col_1)
-
 
 # Most content will be held in cars, that can be defined here or imported
 # If cards are self contained, it's nicer to split them in individual files
@@ -31,18 +29,19 @@ topicsviz_card_1 = dbc.Card([
         dbc.Row([
             dbc.Col([
                 dbc.InputGroup([
-                    dbc.Label('InputGroup 1'),
-                    dbc.RadioItems(id='topicsviz-view-radio'),
+                    dbc.Label('Number of dims'),
+                    dbc.RadioItems(id='topicsviz-view-radio',
+                                   options=[{'label': '2d', 'value': 2}, {'label': '3d', 'value': 3}],
+                                   value=2),
                 ]),
             ], width=2),
             dbc.Col([
-                dcc.Graph(id='topicsviz-scatter', style={'height': '70vh'})
+                dcc.Graph(figure=px.scatter(), id='topicsviz-scatter', style={'height': '70vh'})
             ]),
         ])
 
     ])
 ])
-
 
 # tab container, which is imported by tabindex
 # divided in rows with dbc.Row() and then cols with dbc.Col()
@@ -66,11 +65,7 @@ topicsviz_tab_layout = dbc.Container([
 
 
 # callbacks go below
-@app.callback(
-    Output('topicsviz-scatter', 'figure'),
-    [Input('topicsviz-view-radio', 'value')]
-)
-def update_topicsviz_scatter(view_values):
+def make_topicsviz_2d_scatter():
     df = DATA['METADATA_DF']
     fig = px.scatter(df, x='tsne_2d_x', y='tsne_2d_y', title='Scatterplot documents-topics', color='dom_topic_name',
                      color_discrete_map=DATA['TOPIC_MAPPINGS_DF']['color_code_topic'].to_dict(),
@@ -83,9 +78,39 @@ def update_topicsviz_scatter(view_values):
                          'Language': df['lang'],
                          'tsne_2d_x': False,
                          'tsne_2d_y': False,
-                         'dom_topic': False},)
-                     #color_discrete_sequence=px.colors.qualitative.Dark24, )
+                         'dom_topic': False}, )
+    # color_discrete_sequence=px.colors.qualitative.Dark24, )
     fig.update_traces(marker={'size': 3})
     fig.update_layout(paper_bgcolor='#FCFCFC', plot_bgcolor='#FCFCFC')
-
     return fig
+
+
+def make_topicsviz_3d_scatter():
+    df = DATA['METADATA_DF']
+    fig = px.scatter_3d(df, x='tsne_3d_x', y='tsne_3d_y', z='tsne_3d_z', title='Scatterplot documents-topics',
+                        color='dom_topic_name',
+                        color_discrete_map=DATA['TOPIC_MAPPINGS_DF']['color_code_topic'].to_dict(),
+                        hover_name=df.index,
+                        hover_data={
+                            'Main Topic': df['dom_topic'],
+                            'Title': df['title'].map(lambda x: x if len(x) < 60 else x[:60] + '...'),
+                            'Journal': df['journal_id'],
+                            'Period': df['period'],
+                            'Language': df['lang'],
+                            'tsne_3d_x': False,
+                            'tsne_3d_y': False,
+                            'tsne_3d_z': False,
+                            'dom_topic': False}, )
+    # color_discrete_sequence=px.colors.qualitative.Dark24, )
+    fig.update_traces(marker={'size': 2})
+    fig.update_layout(paper_bgcolor='#FCFCFC', plot_bgcolor='#FCFCFC')
+    return fig
+
+
+@app.callback(
+    Output('topicsviz-scatter', 'figure'),
+    [Input('topicsviz-view-radio', 'value')]
+)
+def update_topicsviz_scatter(n_dims):
+    return make_topicsviz_2d_scatter() if int(n_dims) == 2 else make_topicsviz_3d_scatter()
+

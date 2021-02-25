@@ -94,7 +94,9 @@ def update_topics_details_articles_table(topic):
     d = []
     for article in articles:
         tops = DATA['DOC_TOPICS_DF'].loc[article].nlargest(10)
-        d.append(html.P([f'{DATA["METADATA_DF"].loc[article]["title"]}', html.Br(), f'{", ".join(f"{t} ({p:.4f})" for t, p in tops.items())}']))
+        md = DATA["METADATA_DF"].loc[article]
+        d.append(html.P([f'{md["title"]} | {md["journal_id"]} | {md["period"]}',
+                         html.Br(), f'{", ".join(f"{t} ({p:.4f})" for t, p in tops.items())}']))
     return d
 
 
