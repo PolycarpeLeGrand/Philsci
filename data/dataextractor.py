@@ -4,6 +4,12 @@ from config import DATA_PATHS
 from sklearn.manifold import TSNE
 
 
+def format_authors(authors):
+    for c in '()[]\'':
+        authors = authors.replace(c, '')
+    return authors
+
+
 def make_dfs_from_xlsx():
     """Makes dataframes from xlsx source file and saves them as pickles
 
@@ -16,34 +22,37 @@ def make_dfs_from_xlsx():
 
     f = open('raw_data.xlsx', 'rb')
 
-    tw = pd.read_excel(f, 'Words vs Topics', index_col=0, engine='openpyxl').transpose()
+    topic_words_df = pd.read_excel(f, 'Words vs Topics', index_col=0, engine='openpyxl').transpose()
     df = pd.read_excel(f, 'Doc vs Topic', index_col=0, engine='openpyxl')
-    nf = pd.read_excel(f, 'Top 50 Topics Words', index_col=0, engine='openpyxl').dropna()
+    topic_mappings_df = pd.read_excel(f, 'Top 50 Topics Words', index_col=0, engine='openpyxl').dropna()
 
     df = df.set_index('Article_id')
     df['Dom_topic'] = df['Dom_topic'].map(lambda x: f'topic_{x}')
+    df['Author'] = df['Author'].map(format_authors)
 
-    tf = df[[f'Topic_{i}' for i in range(25)]]
-    mf = df[['Journal_id', 'Title', 'Author', 'Year', 'Citation', 'N_Token', 'Lang_Detect1+manual_for_multi', 'Dom_topic', 'Period']]
-    nf = nf[['Topic ID', 'Topic label (post-clustering)', 'Cluster ID', 'Cluster name', 'Cluster letter + topic (ID)', 'Color code topic', 'Color code category']]
+    doc_topics_df = df[[f'Topic_{i}' for i in range(25)]].copy()
+    metadata_df = df[['Journal_id', 'Title', 'Author', 'Year', 'Citation', 'N_Token', 'Lang_Detect1+manual_for_multi', 'Dom_topic', 'Period']].copy()
+    topic_mappings_df = topic_mappings_df[['Topic ID', 'Topic label (post-clustering)', 'Cluster ID', 'Cluster name', 'Cluster letter + topic (ID)', 'Color code topic', 'Color code category']]
 
-    mf = mf.rename(columns={'Lang_Detect1+manual_for_multi': 'lang'})
-    mf = mf.rename(columns={col: col.lower().replace(' ', '_') for col in mf.columns})
-    tf = tf.rename(columns={col: col.lower().replace(' ', '_') for col in tf.columns})
-    tw = tw.rename(index={ind: ind.lower().replace(' ', '_') for ind in tw.index})
-    nf = nf.rename(columns={'Topic label (post-clustering)': 'topic_name'})
-    nf = nf.rename(index={ind: ind.lower().replace(' ', '_') for ind in nf.index}, columns={col: col.lower().replace(' ', '_') for col in nf.columns})
+    metadata_df.rename(columns={'Lang_Detect1+manual_for_multi': 'lang'}, inplace=True)
+    metadata_df.rename(columns={col: col.lower().replace(' ', '_') for col in metadata_df.columns}, inplace=True)
+    doc_topics_df.rename(columns={col: col.lower().replace(' ', '_') for col in doc_topics_df.columns}, inplace=True)
+    topic_words_df.rename(index={ind: ind.lower().replace(' ', '_') for ind in topic_words_df.index}, inplace=True)
+    topic_mappings_df.rename(columns={'Topic label (post-clustering)': 'topic_name'}, inplace=True)
+    topic_mappings_df.rename(index={ind: ind.lower().replace(' ', '_') for ind in topic_mappings_df.index},
+                             columns={col: col.lower().replace(' ', '_') for col in topic_mappings_df.columns},
+                             inplace=True)
 
-    mf[['tsne_2d_x', 'tsne_2d_y']] = TSNE(n_components=2, random_state=211).fit_transform(tf)
-    mf[['tsne_3d_x', 'tsne_3d_y', 'tsne_3d_z']] = TSNE(n_components=3, random_state=211).fit_transform(tf)
+    metadata_df[['tsne_2d_x', 'tsne_2d_y']] = TSNE(n_components=2, random_state=211).fit_transform(doc_topics_df)
+    metadata_df[['tsne_3d_x', 'tsne_3d_y', 'tsne_3d_z']] = TSNE(n_components=3, random_state=211).fit_transform(doc_topics_df)
+    metadata_df['lang'] = metadata_df['lang'].map({'en': 'English', 'de': 'German', 'fr': 'French', 'nl': 'Dutch'})
+    print(topic_mappings_df)
+    print(topic_mappings_df.index)
 
-    print(nf)
-    print(nf.index)
-
-    pickle.dump(tf, open(DATA_PATHS['DOC_TOPICS_DF'], 'wb'))
-    pickle.dump(mf, open(DATA_PATHS['METADATA_DF'], 'wb'))
-    pickle.dump(tw, open(DATA_PATHS['TOPIC_WORDS_DF'], 'wb'))
-    pickle.dump(nf, open(DATA_PATHS['TOPIC_MAPPINGS_DF'], 'wb'))
+    pickle.dump(doc_topics_df, open(DATA_PATHS['DOC_TOPICS_DF'], 'wb'))
+    pickle.dump(metadata_df, open(DATA_PATHS['METADATA_DF'], 'wb'))
+    pickle.dump(topic_words_df, open(DATA_PATHS['TOPIC_WORDS_DF'], 'wb'))
+    pickle.dump(topic_mappings_df, open(DATA_PATHS['TOPIC_MAPPINGS_DF'], 'wb'))
 
 
 if __name__ == '__main__':

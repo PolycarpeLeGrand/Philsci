@@ -9,10 +9,12 @@ load_dotenv(PROJECT_PATH / '.env')
 LOCAL_IP = environ.get('LOCAL_IP')
 #BASE_STORAGE_PATH = Path(environ.get('LOCAL_STORAGE_PATH'))
 BASE_STORAGE_PATH = PROJECT_PATH / 'data'
+CACHE_PATH = PROJECT_PATH / 'cache'
 IS_PROD = environ.get('IS_PROD') == 'True'
 PORT = 33
 
 DATAFRAMES_PATH = PROJECT_PATH / 'data/dfs'
+MARKDOWNS_PATH = PROJECT_PATH / 'data/markdowns'
 
 # Set paths to data files here.
 DATA_PATHS = {

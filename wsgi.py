@@ -6,6 +6,7 @@ from config import LOCAL_IP, PORT, IS_PROD
 app.layout = layout
 server = app.server
 
+
 if __name__ == '__main__':
     if IS_PROD:
         ip = LOCAL_IP

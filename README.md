@@ -1,4 +1,4 @@
-Philsci
+Phidash
 =======
 
 Template project for Dash dashboards
@@ -7,7 +7,6 @@ Copy template and follow setup instructions
 
 Run with wsgi.py. Prod server will probably need to point to wsgi.server instead of app.
 
-Built on Python 3.9, from [Phidash](https://github.com/PolycarpeLeGrand/Phidash) template.
 
 Setup:
 ------
@@ -42,24 +41,5 @@ Workflow:
 
 Deploy:
 -------
-
-TODO:
------
-
-Features:
-
-* Wordclouds
-* Diachronic analysis
-
-Visuals:
-
-* Color maps for metadata tab so the same values have the same color in the bar chats and the pie chart.
-*  
-
-Dev:
-
-* Comments and doc
-* Tests
-* Data doc (ref markdown file for df col names, etc.)
 
 
