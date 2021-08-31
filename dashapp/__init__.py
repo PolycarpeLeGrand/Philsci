@@ -16,12 +16,11 @@ app = dash.Dash(__name__,
                 suppress_callback_exceptions=IS_PROD)
 
 cache = Cache(app.server, config={
-    'CACHE_TYPE': 'FileSystemCache',
-    'CACHE_DEFAULT_TIMEOUT': 3600,
-    'CACHE_DIR': CACHE_PATH
+    'CACHE_TYPE': 'SimpleCache',
+    'CACHE_DEFAULT_TIMEOUT': 0,
 })
 
-cache.clear()
+# cache.clear()
 
 # Load data
 def load_df_from_pickle(path):

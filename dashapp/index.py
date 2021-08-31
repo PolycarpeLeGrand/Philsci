@@ -42,7 +42,7 @@ layout = html.Div([
             dbc.Col(html.H1(PROJECT_TITLE, style={'text-align': 'center', 'padding': '5px 20px 0px 30px', 'margin': '0px'}), width='auto'),
             dbc.Col(tabs),
         ], no_gutters=True, ),
-    ], className='pt-2 text-light bg-dark', style={'border-bottom-style': 'solid', 'border-width': '1px'}),#, 'border-color': GRAPH_COLORS['text'], 'background-color': GRAPH_COLORS['background']}),
+    ], className='pt-2 text-light bg-dark', style={'border-bottom-style': 'solid', 'border-width': '1px'}),
     dbc.Container([], id='tab-container', fluid=True, style={'padding-top': '3vh'}),
 ], style={'font-family': 'helvetica,arial,courier,sans-serif'})
 
