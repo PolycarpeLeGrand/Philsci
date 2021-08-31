@@ -42,8 +42,8 @@ CONTRIBUTORS = {
 
 
 # Cache config
-if False:#IS_PROD:
-    CACHE_CONFIG = {'CACHE_TYPE': 'redis', 'CACHE_REDIS_HOST': '127.0.0.1', 'CACHE_DEFAULT_TIMEOUT': 0,}
+if IS_PROD:
+    CACHE_CONFIG = {'CACHE_TYPE': 'RedisCache', 'CACHE_REDIS_HOST': '127.0.0.1', 'CACHE_DEFAULT_TIMEOUT': 0,}
 else:
     CACHE_CONFIG = {'CACHE_TYPE': 'SimpleCache', 'CACHE_DEFAULT_TIMEOUT': 0,}
 
