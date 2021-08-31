@@ -68,6 +68,6 @@ presentation_tab_layout = dbc.Container([
      Output('cache-test-btn', 'n_clicks')],
     [Input('cache-test-btn', 'n_clicks')], prevent_initial_call=True
 )
-@cache.memoize(timeout=10)
+@cache.memoize()
 def test_cache(n):
     return random.randint(0, 1000), 0

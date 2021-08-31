@@ -11,6 +11,8 @@ from dash.dependencies import Input, Output, State
 import plotly.express as px
 import plotly.graph_objs as go
 
+from datetime import datetime
+
 from tools.factories import jumbotron_2_columns
 from dashapp import app, DATA, TOPICVIZ_MD, cache
 
@@ -38,7 +40,8 @@ topicsviz_card_1 = dbc.Card([
                                    options=[{'label': '3d', 'value': 3}, {'label': '2d', 'value': 2}],
                                    value=3),
                 ]),
-                html.Div(html.H5('Click a point to see article details.'), id='topicsviz-details-text', style={'padding-top': '5vh'})
+                html.H6(id='topics-generated-on'),
+                html.Div(html.H5('Click a point to see article details.'), id='topicsviz-details-text', style={'padding-top': '5vh'}),
             ], width=3),
             dbc.Col([
                 dcc.Graph(figure=px.scatter(), id='topicsviz-scatter', style={'height': '80vh'})
@@ -116,15 +119,16 @@ def make_topicsviz_3d_scatter():
     return fig
 
 @app.callback(
-    Output('topicsviz-scatter', 'figure'),
+    [Output('topicsviz-scatter', 'figure'),
+     Output('topics-generated-on', 'children')],
     [Input('topicsviz-view-radio', 'value')]
 )
 @cache.memoize()
 def update_topicsviz_scatter(n_dims):
     # return make_topicviz_periods_scatter()
-    print('Not loaded from cache')
+    now = datetime.now()
     fig = make_topicsviz_2d_scatter() if int(n_dims) == 2 else make_topicsviz_3d_scatter()
-    return fig
+    return fig, f'Graph generated at: {now.strftime("%H:%M:%S")}'
 
 
 @app.callback(

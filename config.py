@@ -43,6 +43,7 @@ CONTRIBUTORS = {
 
 # Cache config
 if IS_PROD:
+    # requires pip install redis
     CACHE_CONFIG = {'CACHE_TYPE': 'RedisCache', 'CACHE_REDIS_HOST': '127.0.0.1', 'CACHE_DEFAULT_TIMEOUT': 0,}
 else:
     CACHE_CONFIG = {'CACHE_TYPE': 'SimpleCache', 'CACHE_DEFAULT_TIMEOUT': 0,}
