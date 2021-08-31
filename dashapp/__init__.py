@@ -16,6 +16,7 @@ app = dash.Dash(__name__,
                 suppress_callback_exceptions=IS_PROD)
 
 cache = Cache(app.server, config=CACHE_CONFIG)
+cache.clear()
 
 # cache.clear()
 
