@@ -5,8 +5,10 @@ import dash_html_components as html
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 
+import random
+
 from tools.factories import jumbotron_2_columns
-from dashapp import PROJECT_MD, REFERENCES_MD, HOWTO_MD
+from dashapp import PROJECT_MD, REFERENCES_MD, HOWTO_MD, app, cache
 
 # Set tab id
 TAB_ID = 'presentation-tab'
@@ -28,7 +30,10 @@ pres_card_abstract = dbc.Card([
         dcc.Markdown(PROJECT_MD, className='h6'),
         html.Hr(style={'width': '30%', 'text-align': 'left', 'margin-left': '0px'}),
         html.Br(),
-        dcc.Markdown(REFERENCES_MD, className='h6')
+        dcc.Markdown(REFERENCES_MD, className='h6'),
+        html.Br(),
+        html.H4(id='cache-test'),
+        dbc.Button('Cache Test', id='cache-test-btn')
     ])
 ])
 
@@ -58,4 +63,11 @@ presentation_tab_layout = dbc.Container([
 
 
 # callbacks go below
-
+@app.callback(
+    [Output('cache-test', 'children'),
+     Output('cache-test-btn', 'n_clicks')],
+    [Input('cache-test-btn', 'n_clicks')], prevent_initial_call=True
+)
+@cache.memoize(timeout=10)
+def test_cache(n):
+    return random.randint(0, 1000), 0

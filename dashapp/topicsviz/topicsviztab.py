@@ -64,7 +64,6 @@ topicsviz_tab_layout = dbc.Container([
 
 
 # callbacks go below
-@cache.memoize()
 def make_topicsviz_2d_scatter():
     df = DATA['METADATA_DF']
     fig = px.scatter(df, x='tsne_2d_x', y='tsne_2d_y', title='Scatterplot documents-topics', color='dom_topic_name',
@@ -89,7 +88,6 @@ def make_topicsviz_2d_scatter():
         .update_xaxes(range=[-100, 100]).update_yaxes(range=[-110, 110])
     return fig
 
-@cache.memoize()
 def make_topicsviz_3d_scatter():
     df = DATA['METADATA_DF']
     fig = px.scatter_3d(df, x='tsne_3d_x', y='tsne_3d_y', z='tsne_3d_z', title='Scatterplot documents-topics',
@@ -121,8 +119,10 @@ def make_topicsviz_3d_scatter():
     Output('topicsviz-scatter', 'figure'),
     [Input('topicsviz-view-radio', 'value')]
 )
+@cache.memoize()
 def update_topicsviz_scatter(n_dims):
     # return make_topicviz_periods_scatter()
+    print('Not loaded from cache')
     fig = make_topicsviz_2d_scatter() if int(n_dims) == 2 else make_topicsviz_3d_scatter()
     return fig
 

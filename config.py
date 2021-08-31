@@ -40,3 +40,10 @@ CONTRIBUTORS = {
                      ' when there is more text and multiple lines might be needed.',
     }
 
+
+# Cache config
+if IS_PROD:
+    CACHE_CONFIG = {'CACHE_TYPE': 'redis', 'CACHE_REDIS_URL': '127.0.0.1:6379', 'CACHE_DEFAULT_TIMEOUT': 0,}
+else:
+    CACHE_CONFIG = {'CACHE_TYPE': 'SimpleCache', 'CACHE_DEFAULT_TIMEOUT': 0,}
+

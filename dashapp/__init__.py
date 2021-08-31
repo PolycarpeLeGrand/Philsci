@@ -4,7 +4,7 @@ import dash_bootstrap_components as dbc
 import codecs
 from flask_caching import Cache
 
-from config import PROJECT_TITLE, IS_PROD, DATA_PATHS, MARKDOWNS_PATH, CACHE_PATH
+from config import PROJECT_TITLE, IS_PROD, DATA_PATHS, MARKDOWNS_PATH, CACHE_CONFIG
 
 
 # compile style
@@ -15,10 +15,7 @@ app = dash.Dash(__name__,
                 title=PROJECT_TITLE,
                 suppress_callback_exceptions=IS_PROD)
 
-cache = Cache(app.server, config={
-    'CACHE_TYPE': 'SimpleCache',
-    'CACHE_DEFAULT_TIMEOUT': 0,
-})
+cache = Cache(app.server, config=CACHE_CONFIG)
 
 # cache.clear()
 
